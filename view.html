@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="implementCart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="fillForm"></div>
+
+<div class="container-fluid">
+    <section id="EditSection">
+
+    </section>
+    <label id="editInfo"></label>
+
+    <button id="addProduct" class="btn btn-success">add product</button>
+    <div class="row">
+
+
+
+        <div class="col-sm-6">
+            <div id="product"  >
+                <h1 class="titleForm">Add Product</h1>
+                <form  >
+                    <div>title:</div>
+                    <div><input type="text" id="title"  /></div>
+                    <div id="titleError"></div>
+                    <div>description</div>
+                    <div><input type="text"
+                                id="description" /></div>
+                    <div id="descriptionError"></div>
+                    <div>quantity</div>
+                    <div><input type="number"
+                                id="quantity"  /></div>
+                    <div id="quantityError"></div>
+                    <div>
+                        <input type="file" id="imageinput"  onchange="renderCanvas(event)"/>
+
+                        <div id="imgError"></div>
+                    </div>
+                    <div><input type="submit" id="createProduct" value="create" /></div>
+                    <div  id="createdProduct" class="bg-success"></div>
+                    <canvas width="200" height="200" id="mycanvas" ></canvas>
+
+                </form>
+
+
+            </div>
+
+            <div id="renderProducts">
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="col-sm-6">
+            <div>
+                <img id="imgShopping"  class="imgCart" src="./28468-200.png" width="150" height="150" alt="Smiley">
+            </div>
+            <button id="clearCart">clear cart</button>
+            <button id="totalSum" >total sum</button>
+
+            <div id="shoppingCart">
+                <div id="total"></div>
+                <h1>Products in shopping cart</h1>
+                <h2 id="existProduct"></h2>
+                <div id="productsInShoppingCart">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>runCart()</script>
+
+</body>
+</html>

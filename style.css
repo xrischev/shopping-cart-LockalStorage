@@ -1,0 +1,15 @@
+td{
+    display: block;
+}
+#renderProducts >div{
+    display: inline-block;
+}
+#productsInShoppingCart >div{
+    display: inline-block;
+}
+href{
+    display: block;
+}
+.imgCart{
+    cursor: pointer
+}
