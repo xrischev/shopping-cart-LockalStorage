@@ -90,17 +90,21 @@ function runCart() {
 
 
         if(clickShowCart==true){
+
+
+            $('#productsInShoppingCart').empty()
+
             var productsIdInCart = JSON.parse(sessionStorage.getItem('shoppingCart'));
 
 
+            let arrUrlProductInCart=[]
 
 
             for ( var i = 0, len = localStorage.length; i < len; ++i ) {
                 let product = JSON.parse(localStorage.getItem(localStorage.key(i)));
 
 
-
-
+                arrUrlProductInCart.push(product)
 
                 for (let a = 0; a < productsIdInCart.length; a++) {
 
@@ -118,6 +122,35 @@ function runCart() {
 
                             )
                         )
+
+                        for (let i = 0; i < arrUrlProductInCart.length; i++) {
+
+                            let variable=0
+
+                            let canvas='canvas'+i
+                            let context='contex' +i
+                            let base_image='base_imabe'+i
+
+                            canvas  = document.getElementById(`${'imgInCartShowPic'+product.idProduct}`),
+                                context = canvas.getContext('2d');
+
+
+
+                            make_base();
+
+                            function make_base()
+                            {
+
+                                canvas.width=200
+                                canvas.height=200
+
+                                base_image = new Image();
+                                base_image.src = arrUrlProductInCart[i].img
+                                base_image.onload = function(){
+                                    context.drawImage(base_image, 0, 0);
+                                }
+                            }
+                        }
 
 
 
@@ -414,7 +447,11 @@ function runCart() {
 
                 renderProducts()
 
-                location.reload();
+
+
+                setTimeout(function() {   location.reload(); }, 1000);
+
+
             }
 
         }
