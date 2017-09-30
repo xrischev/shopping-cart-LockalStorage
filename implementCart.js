@@ -3,6 +3,7 @@ let imgUrl=''
 function runCart() {
     let clickOne=true
     let clickShowCart=true
+    let clickEdit=true
     let idProducts=[]
     let existId=[]
 
@@ -74,8 +75,14 @@ function runCart() {
     }
 
     function clearCart() {
+        existId.splice(0)
+        idProducts.splice(0)
 
-        sessionStorage.clear()
+
+        window.sessionStorage.shoppingCart = JSON.stringify([]);
+
+        location.reload();
+
         $('#productsInShoppingCart').remove()
     }
 
@@ -103,7 +110,8 @@ function runCart() {
                         $('#productsInShoppingCart').append($("<div  id='"+'productShoppingCartDelete'+product.idProduct+"'></div>").append(
                             $('<div>').append($('<label>').text('title:')).append($('<div>').text(product.title)),
                             $('<div>').append($('<label>').text('description:')).append($('<div>').text(product.description)),
-                            $('<div>').append($('<label>').text('quantity')).append($('<div>').text(product.quantity))
+                            $('<div>').append($('<label>').text('quantity')).append($('<div>').text(product.quantity)),
+                        $('<div>').append("<br><canvas width='200' height='200'  id='"+'imgInCartShowPic'+product.idProduct+"'></canvas><br>")
                                 .append($('<a href="#" class="btn btn-danger">[Remove product]</a>')
                                     .click(removeProductFromShowCart.bind(this,product.idProduct)))
 
@@ -142,6 +150,9 @@ function runCart() {
         let removeProduct='productShoppingCartDelete'+id
 
         $("#" + removeProduct).remove()
+
+
+
 
 
     }
@@ -220,6 +231,8 @@ function runCart() {
 
             idProducts.push(idProduct)
 
+
+
             $('#existProduct').text('')
 
             if(existId.includes(idProduct)){
@@ -231,11 +244,14 @@ function runCart() {
 
             existId.push(idProduct)
 
+
             let arrUrlProductInCart=[]
 
             let uniqueIdInCart = Array.from(new Set(idProducts))
 
             window.sessionStorage.shoppingCart = JSON.stringify(uniqueIdInCart);
+
+
 
             var obj1 = JSON.parse(sessionStorage.getItem('shoppingCart'));
 
@@ -250,10 +266,13 @@ function runCart() {
 
                     let productInCart= JSON.parse(localStorage.getItem(key))
 
+                    console.log(productInCart)
+
 
 
                     $('#productsInShoppingCart').append($("<div  id='"+'productInCartRemove'+product.idProduct+"'></div>").append(
                         $('<div>').append($('<label>').text('title:')).append($('<div>').text(product.title)),
+                        $('<div>').append($('<label>').text('description:')).append($('<div>').text(product.description)),
                         $('<div>').append($('<label>').text('quantity')).append($('<div>').text(product.quantity)),
                         $('<div>').append("<br><canvas width='200px' height='200px' id='"+'imgInCart'+product.idProduct+"'></canvas><br>")
                             .append($('<a href="#" class="btn btn-danger">[Remove product]</a>')
@@ -308,61 +327,74 @@ function runCart() {
 
                 $("#" + removeProduct).remove()
 
+                existId = existId.filter(item => item !== id)
+
+
+
 
             }
 
         }
 
         function editProduct(idProduct) {
-            for ( var i = 0, len = localStorage.length; i < len; ++i ) {
-                let product = JSON.parse(localStorage.getItem(localStorage.key(i)));
 
-                let key=localStorage.key(i)
 
-                if('product'+ idProduct==key){
 
-                    $('#product').hide()
+            if(clickEdit==true){
+                for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+                    let product = JSON.parse(localStorage.getItem(localStorage.key(i)));
 
-                    let editProduct= JSON.parse(localStorage.getItem(key))
+                    let key=localStorage.key(i)
 
-                    let img=editProduct.img
+                    if('product'+ idProduct==key){
 
-                    let state={
-                        id:idProduct,
-                        imgage:img
+                        $('#product').hide()
+
+                        let editProduct= JSON.parse(localStorage.getItem(key))
+
+                        let img=editProduct.img
+
+                        let state={
+                            id:idProduct,
+                            imgage:img
+                        }
+
+                        $('#EditSection')
+                            .append($('<h1>').text('Edit Form'))
+                            .append($('<form>')
+                                .append($('<div>').text('title')
+                                    .append($('<div>')
+                                        .append($('<input id="editTitle">').val(editProduct.title))
+                                    )
+
+                                )
+                                .append($('<div>').text('description')
+                                    .append($('<div>')
+                                        .append($('<input id="editDescription">').val(editProduct.description))
+                                    )
+
+                                )
+                                .append($('<div>').text('quantity')
+                                    .append($('<div>')
+                                        .append($('<input id="editQuantity" type="number">').val(editProduct.quantity))
+                                    )
+
+                                )
+                            )
+                            .append($('<a href="#" class="btn btn-info">[Edit]</a>')
+                                .click(editFormProduct.bind(this,state)))
                     }
 
-                    $('#EditSection')
-                        .append($('<h1>').text('Edit Form'))
-                        .append($('<form>')
-                            .append($('<div>').text('title')
-                                .append($('<div>')
-                                    .append($('<input id="editTitle">').val(editProduct.title))
-                                )
-
-                            )
-                            .append($('<div>').text('description')
-                                .append($('<div>')
-                                    .append($('<input id="editDescription">').val(editProduct.description))
-                                )
-
-                            )
-                            .append($('<div>').text('quantity')
-                                .append($('<div>')
-                                    .append($('<input id="editQuantity" type="number">').val(editProduct.quantity))
-                                )
-
-                            )
-                        )
-                        .append($('<a href="#" class="btn btn-info">[Edit]</a>')
-                            .click(editFormProduct.bind(this,state)))
                 }
-
             }
+            clickEdit=false
+
+
             function editFormProduct(state) {
 
 
-                $('#editInfo').text('success edit!!!')
+
+                $('#editInfo').text('success edit!!!').fadeOut(2000)
 
 
 
@@ -381,6 +413,8 @@ function runCart() {
                 localStorage.setItem('product'+state.id,JSON.stringify(editData))
 
                 renderProducts()
+
+                location.reload();
             }
 
         }
